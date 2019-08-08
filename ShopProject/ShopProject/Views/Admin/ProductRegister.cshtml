@@ -1,0 +1,110 @@
+﻿@model ShopProject.Models.Product
+@{
+   ViewData["Title"] = "ProductRegister";
+}
+
+<!-- Body Right (A) -->
+<div class="col-lg-10 col-md-10 col-sm-10">
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+         <div style="margin:0px 200px">
+            <h1 style="padding:50px">
+               <a asp-controller="Admin" asp-action="ProductRegister" style="text-decoration:none">ProductRegister</a>
+            </h1>
+            <form asp-action="ProductRegister" asp-route-returnurl="@ViewData["ReturnUrl"]" method="POST" enctype="multipart/form-data">
+               <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+               <table class="table table-hover" style="font-size: 13pt;">
+                  <tr>
+                     <th rowspan="6" width="500">
+                        <img class="blah" src="~/images/NoImage.PNG" width=480 height=375 />
+                        <input type="file" name="file" id="field" class="btn readImage" />
+                        <input type="button" value="Cancel" class="btn btn-warning pull-right DelImage" />
+                     </th>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <th><label asp-for="ProductCategory" class="control-label"></label></th>
+                     <td><select asp-for="ProductCategory" class="form-control" asp-items="ViewBag.ProductCategoryList"></select></td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <th><label asp-for="ProductName" class="control-label"></label></th>
+                     <td>
+                        <input type="text" asp-for="ProductName" class="form-control" placeholder="Name.." required />
+                        <span asp-validation-for="ProductName" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <th><label asp-for="ProductPrice" class="control-label"></label></th>
+                     <td>
+                        <input type="number" asp-for="ProductPrice" class="form-control" placeholder="円" required />
+                        <span asp-validation-for="ProductPrice" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <th><label asp-for="ProductStock" class="control-label"></label></th>
+                     <td>
+                        <input type="number" asp-for="ProductStock" class="form-control" placeholder="個" required />
+                        <span asp-validation-for="ProductStock" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <th><label asp-for="ProductRemark" class="control-label"></label></th>
+                     <td>
+                        <input type="text" asp-for="ProductRemark" class="form-control" />
+                        <span asp-validation-for="ProductRemark" class="text-danger"></span>
+                     </td>
+                  </tr>
+               </table>
+               <details class="text-center" style="margin-top:60px">
+                  <summary style="cursor: pointer;font-size:25px">Add Image?</summary>
+                  <div class="row" style="margin:40px auto;">
+                     <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div style="width:480px;height:400px;margin:0 auto">
+                           <img class="blah" src="~/images/NoImage.PNG" style="width:480px;height:375px" />
+                           <input type="file" name="file" id="field2" class="btn readImage" />
+                           <input type="button" value="Cancel" class="btn btn-warning pull-right DelImage" />
+                        </div>
+                     </div>
+                     <div class="col-lg-6 col-md-6 col-sm-6">
+                        <div style="width:480px;height:400px;margin:0 auto">
+                           <img class="blah" src="~/images/NoImage.PNG" style="width:480px;height:375px" />
+                           <input type="file" name="file" id="field3" class="btn readImage" />
+                           <input type="button" value="Cancel" class="btn btn-warning pull-right DelImage" />
+                        </div>
+                     </div>
+                  </div>
+               </details>
+               <div class="text-center" style="margin:80px 0">
+                  <input type="submit" value="Create" class="btn btn-primary btn-lg" style="padding:10px 200px" />
+               </div>
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Body Right (Z) -->
+
+<script>
+   $(function () {
+      // change image A
+      $('.readImage').change(function () {
+         var ImageIndex = $('.readImage').index($(this));
+         if (this.files && this.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function () {
+               $('.blah').eq(ImageIndex).attr('src', event.target.result).width(480).height(375);
+            };
+            reader.readAsDataURL(this.files[0]);
+         }
+      });
+      // change image Z
+      // delete image A
+      $('.DelImage').click(function () {
+         var ImageIndex = $('.DelImage').index($(this));
+         $('.readImage').eq(ImageIndex).val('');
+         $('.blah').eq(ImageIndex).attr("src", "@Url.Content("~/")images/NoImage.PNG");
+      });
+      // delete image Z
+   });
+</script>
+
+

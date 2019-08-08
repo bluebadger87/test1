@@ -1,0 +1,255 @@
+﻿@model IEnumerable<ShopProject.Models.Product>
+@{
+   ViewData["Title"] = "ProductList";
+   int no = 0;
+}
+
+<!-- Body Right (A) -->
+<div class="col-lg-10 col-md-10 col-sm-10">
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+         <div style="margin:0px 100px">
+            <h1 style="padding:50px">
+               <a asp-controller="Admin" asp-action="ProductList" style="text-decoration:none;">ProductList</a>
+            </h1>
+            <!-- Search A -->
+            <form asp-controller="Admin" asp-action="ProductList" asp-route-searchString="@ViewBag.searchString" asp-route-funnelDel="@ViewBag.funnelDel" method="get">
+               <div class="text-center">
+                  <span><input type="radio" name="funnelDel" value="" checked />All　</span>
+                  <span><input type="radio" name="funnelDel" value="1" @(ViewBag.funnelDel=="1" ? "checked" : "") />Exist　</span>
+                  <span><input type="radio" name="funnelDel" value="0" @(ViewBag.funnelDel.Equals("0") ? "checked" : "") />Deleted</span>
+                  <div style="margin:20px 0 70px 0">
+                     Title: <input type="text" name="searchString" value=@ViewBag.searchString>
+                     <input type="submit" value="Search" />
+                  </div>
+               </div>
+            </form>
+            <!-- Search Z -->
+            <!-- Product List Table A -->
+            <form id="checkDelForm" asp-controller="Admin" asp-action="ProductDelete" asp-route-searchString="@ViewBag.searchString" asp-route-funnelDel="@ViewBag.funnelDel" method="post">
+               <table class="table table-hover text-center" id="hwang">
+                  <thead>
+                     <tr class="bg-primary">
+                        <th class="text-center">
+                           <input type="checkbox" id="allcheck" />
+                        </th>
+                        <th class="text-center">
+                           no
+                        </th>
+                        <th class="text-center">
+                           @Html.DisplayNameFor(model => model.ProductNo)
+                        </th>
+                        <th class="text-center">
+                           @Html.DisplayNameFor(model => model.ProductCategory)
+                        </th>
+                        <th class="text-center">
+                           @Html.DisplayNameFor(model => model.ProductName)
+                        </th>
+                        <th class="text-center">
+                           @Html.DisplayNameFor(model => model.ProductPrice)
+                        </th>
+                        <th class="text-center">
+                           @Html.DisplayNameFor(model => model.ProductStock)
+                        </th>
+                        <th class="text-center">
+                           @Html.DisplayNameFor(model => model.ProductRemark)
+                        </th>
+                        <th class="text-center">
+                           @Html.DisplayNameFor(model => model.ProductDel)
+                        </th>
+                        <th class="text-center">
+                           @Html.DisplayNameFor(model => model.ProductInp)
+                        </th>
+                        <th class="text-center">
+                           @Html.DisplayNameFor(model => model.ProductUpd)
+                        </th>
+                        <th class="text-center">
+                           Option
+                        </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     @foreach (var item in Model)
+                     {
+                        <tr id="@item.ProductNo" class="trBg" style="background-color: @(item.ProductDel =="0" ?"darkgray":"")">
+                           <td class="text-center">
+                              <input type="checkbox" class="checks" name="check" value="@item.ProductNo" />
+                           </td>
+                           <th class="text-center">
+                              @(no = no + 1)
+                           </th>
+                           <th class="text-center">
+                              @Html.DisplayFor(modelItem => item.ProductNo)
+                           </th>
+                           <td>
+                              @Html.DisplayFor(modelItem => item.ProductCategoryList.Name)
+                           </td>
+                           <td>
+                              <a asp-controller="Admin" asp-action="ProductDetail" asp-route-id="@item.ProductNo" asp-route-searchString="@ViewBag.searchString" asp-route-funnelDel="@ViewBag.funnelDel">
+                                 @Html.DisplayFor(modelItem => item.ProductName)
+                              </a>
+                           </td>
+                           <td>
+                              @Html.DisplayFor(modelItem => item.ProductPrice)円
+                           </td>
+                           @foreach (var item2 in ViewBag.currentStock)
+                           {
+                              @if (item.ProductNo.Equals(item2.Key))
+                              {
+                                 <td>
+                                    @(item2.Value)/@(item.ProductStock)個
+                                 </td>
+                              }
+                           }
+                           <td>
+                              @Html.DisplayFor(modelItem => item.ProductRemark)
+                           </td>
+                           @if (item.ProductDel=="1")
+                           {
+                              <td class="textdel">Exist</td>
+                           }
+                           else
+                           {
+                              <td class="textdel">Deleted</td>
+                           }
+                           <td>
+                              @Html.DisplayFor(modelItem => item.ProductInp)
+                           </td>
+                           <td>
+                              @Html.DisplayFor(modelItem => item.ProductUpd)
+                           </td>
+                           <td>
+                              @*<form asp-controller="Admin" asp-action="ProductDelete" asp-route-id="@item.ProductNo" asp-route-searchString="@ViewBag.searchString" asp-route-funnelDel="@ViewBag.funnelDel" method="post">*@
+                              <a asp-controller="Admin" asp-action="ProductModify" asp-route-id="@item.ProductNo" asp-route-searchString="@ViewBag.searchString" asp-route-funnelDel="@ViewBag.funnelDel" class="btn btn-warning">Modify</a>
+                              @if (item.ProductDel=="1")
+                              {
+                                 <button name="ProductNo" data-val="@(item.ProductNo)" class="btn btn-danger ajaxDel">Delete</button>
+                                 @*<button type="submit" name="oneChange" value="@item.ProductNo" class="btn btn-danger">Delete</button>*@
+                              }
+                              else
+                              {
+                                 <button name="ProductNo2" data-val="@(item.ProductNo)" class="btn btn-primary ajaxDel">Exist</button>
+                                 @*<button type="submit" name="oneChange" value="@item.ProductNo" class="btn btn-primary">Exist</button>*@
+                              }
+                              @*</form>*@
+                           </td>
+                        </tr>
+                     }
+                  </tbody>
+               </table>
+               <div class="text-center" style="margin:60px 0">
+                  <button class="btn btn-danger btn-lg ajaxCheckDel" name="Del" value="Delete">CheckBox Delete</button>&emsp;&emsp;
+                  <button class="btn btn-primary btn-lg ajaxCheckExist" name="Del" value="Exist">CheckBox Exist</button>
+               </div>
+            </form>
+            <!-- Product List Table Z -->
+            <div class="text-center">
+               <div id="top-btn" style="cursor:pointer">- Top -</div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Body Right (Z) -->
+
+<script>
+   $(function () {
+      //checkbox ALL Check A
+      $('#allcheck').click(function () {
+         var checkboxes = document.querySelectorAll('input[type="checkbox"]');
+         for (var i = 0; i < checkboxes.length; i++) {
+            if (checkboxes[i] !== this)
+               checkboxes[i].checked = this.checked;
+         }
+      });
+      //checkbox ALL Check Z
+      //check mouseover A
+      $(".checks").mouseover(function () {
+          $(this).attr("checked", !$(this).prop("checked"));
+      });
+      //check mouseover Z
+   });
+
+    // Check Delete-btn && Check Exist-btn A
+    $(function () {
+        $('.ajaxCheckDel').click(function () {
+            event.preventDefault();
+            var url = '@Url.Content("~/")' + "Shop/AjaxCheckProductDel";
+            var id = []; 
+            $(':checkbox:checked').each(function (i) {
+                id[i] = $(this).val();
+            });
+            if (id.length === 0) {
+               alert("please check product");
+            }
+           $.ajax({
+              type: 'post',
+              url: url,
+              data: { check: id },
+              success: function () {
+                 for (var i = 0; i < id.length; i++) {
+                    $('#' + id[i]).css('background-color', 'darkgray');
+                    $('#' + id[i] + ' .checks').prop("checked", false);
+                    $('#' + id[i] + ' .ajaxDel').removeClass('btn-danger').addClass('btn-primary').text('Exist');
+                    $('#' + id[i] + ' .textdel').text('Deleted');
+                 }
+              }
+           });
+        });
+        $('.ajaxCheckExist').click(function () {
+            event.preventDefault();
+            var url = '@Url.Content("~/")' + "Shop/AjaxCheckProductExist";
+            var id = [];
+            $(':checkbox:checked').each(function (i) {
+                id[i] = $(this).val();
+            });
+            if (id.length === 0) {
+               alert("please check product");
+            }
+           $.ajax({
+              type: 'post',
+              url: url,
+              data: { check: id },
+              success: function () {
+                 for (var i = 0; i < id.length; i++) {
+                    $('#' + id[i]).css('background-color', 'white');
+                    $('#' + id[i] + ' .checks').prop("checked", false);
+                    $('#' + id[i] + ' .ajaxDel').removeClass('btn-primary').addClass('btn-danger').text('Delete');
+                    $('#' + id[i] + ' .textdel').text('Exist');
+                 }
+              }
+           });
+        });
+    });
+    // Check Delete-btn && Check Exist-btn Z
+
+    // Delete-btn OR Exist-btn A
+    $(function() {
+        var url = '@Url.Content("~/")' + "Shop/AjaxProductDel";
+        $(".ajaxDel").click(function () {
+           event.preventDefault();
+            var aa = $(this).attr("data-val");
+            var index = $('.ajaxDel').index($(this));
+           $.ajax({
+              type: 'post',
+              url: url,
+              data: { id: aa },
+              context: this, // thisがsuccessの中でも使えるようになる!!!
+              success: function (result) {
+                 if (result === 0) {
+                    $(this).removeClass('btn-danger').addClass('btn-primary').text('Exist');
+                    $('.trBg').eq(index).css('background-color', 'darkgray');
+                    $('.textdel').eq(index).text('Deleted');
+                 }
+                 else {
+                    $(this).removeClass('btn-primary').addClass('btn-danger').text('Delete');
+                    $('.trBg').eq(index).css('background-color', 'white');
+                    $('.textdel').eq(index).text('Exist');
+                 }
+              }
+           });
+            return false; //event.preventDefault();　と同じような!!
+        });
+    });
+    // Delete-btn OR Exist-btn Z
+</script>

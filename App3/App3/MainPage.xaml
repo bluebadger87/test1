@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:App3"
+             x:Class="App3.MainPage">
+
+    <ScrollView>
+        <StackLayout>
+            <Label>
+                <Label.FormattedText>
+                    <FormattedString>
+                    <Span Text="빨간" TextColor="Red" FontAttributes="Bold"/>
+                    <Span Text="사과" TextColor="Green"/>
+                    </FormattedString>
+                </Label.FormattedText>
+            </Label>
+            
+            <Label Text="HeadTruncation" FontAttributes="Bold,Italic" />
+            <Label LineBreakMode="HeadTruncation" Text="aaaaaaa bbbbbbbb ccccccc ddddddd eeeeeee"/>
+
+            <Label Text="TailTruncation" FontAttributes="Bold,Italic" />
+            <Label LineBreakMode="TailTruncation" Text="aaaaaaa bbbbbbbb ccccccc ddddddd eeeeeee"/>
+            
+            <Label Text="CharacterWrap" FontAttributes="Bold,Italic" />
+            <Label LineBreakMode="CharacterWrap" Text="aaaaaaa bbbbbbbb ccccccc ddddddd eeeeeee"/>
+
+            <Label TextColor="#ff0000" Text="TextColor=#ff0000"/>
+            <Label TextColor="#00ff00" Text="TextColor=#00ff00"/>
+            <Label TextColor="Gray" Text="TextColor=gray"/>
+            
+            <Label FontSize="Large" Text="Fontsize=Large"/>
+            <Label FontSize="Medium" Text="Fontsize=Medium"/>
+            <Label FontSize="Small" Text="Fontsize=Small"/>
+            <Label FontSize="Default" Text="Fontsize=Default"/>
+            <Label FontSize="Micro" Text="Fontsize=Micro"/>
+
+            <Label FontSize="50" Text="Fontsize=50"/>
+            <Label FontSize="30" Text="Fontsize=30"/>
+        </StackLayout>
+    </ScrollView>
+</ContentPage>

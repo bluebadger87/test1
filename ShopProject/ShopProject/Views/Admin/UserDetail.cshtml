@@ -1,0 +1,141 @@
+﻿@model ShopProject.Models.User
+@{
+   ViewData["Title"] = "UserDetail";
+   int no = 0;
+}
+
+<!-- Body Right (A) -->
+<div class="col-lg-10 col-md-10 col-sm-10">
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+         <h1 class="text-center" style="padding:50px">UserDetail</h1>
+         <div style="margin:0px 100px">
+            <form asp-controller="Admin" asp-action="UserDelete" asp-route-id="@Model.UserNo" method="post">
+               <h3>
+                  <a asp-controller="Admin" asp-action="UserList" class="btn btn-primary btn-lg">&lt;&lt;Back</a>
+                  <a asp-controller="Admin" asp-action="UserModify" asp-route-id="@Model.UserNo" class="btn btn-warning btn-lg">Edit</a>
+                  @if (Model.UserDel=="1")
+                  {
+                     <input type="submit" class="btn btn-danger btn-lg" value="Delete" />
+                  }
+                  else
+                  {
+                     <input type="submit" class="btn btn-primary btn-lg" value="Exist" />
+                  }
+               </h3>
+            </form>
+            <!-- User Info Table A -->
+            <table class="table table-hover" style="font-size: 13pt;margin:30px 0 50px 0">
+               <tr>
+                  <td rowspan="11" width="500">
+                     <img src="~/images/User.png" width=480 height=375 />
+                  </td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <td>@Html.DisplayNameFor(model => model.UserNo)</td>
+                  <td>@Model.UserNo</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <td>@Html.DisplayNameFor(model => model.UserId)</td>
+                  <td>@Model.UserId</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <td>@Html.DisplayNameFor(model => model.UserName)</td>
+                  <td>@Model.UserName</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <td>@Html.DisplayNameFor(model => model.UserAddress1)</td>
+                  <td>@Model.UserAddress1</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <td>@Html.DisplayNameFor(model => model.UserTel)</td>
+                  <td>@Model.UserTel</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <td>@Html.DisplayNameFor(model => model.UserMail)</td>
+                  <td>@Model.UserMail</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <td>@Html.DisplayNameFor(model => model.UserAuthority)</td>
+                  <td>@Model.UserAuthority</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <td>@Html.DisplayNameFor(model => model.UserDel)</td>
+                  <td>
+                     <input type="radio" value="1" asp-for="UserDel" disabled>Exist　
+                     <input type="radio" value="0" asp-for="UserDel" disabled>Delete
+                  </td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <td>@Html.DisplayNameFor(model => model.UserInp)</td>
+                  <td>@Html.DisplayFor(model => model.UserInp)</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <td>@Html.DisplayNameFor(model => model.UserUpd)</td>
+                  <td>@Model.UserUpd</td>
+               </tr>
+            </table>
+            <!-- User Info Table Z -->
+            <!-- SimpleOrder List (A) -->
+            @foreach (var simpleItem in (List<Order>)ViewBag.simpleOrderHistory)
+            {
+               <table class="table table-hover text-center">
+                  <thead>
+                     <tr class="bg-primary" style="font-weight:bold">
+                        <td>no</td>
+                        <td>OrderNo</td>
+                        <td>TotalPrice</td>
+                        <td>OrderDate</td>
+                        <td>Detail</td>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td>@(no = no + 1)</td>
+                        <td>@simpleItem.OrderNo</td>
+                        <td>@simpleItem.OrderTotalPrice<z>円</z></td>
+                        <td>@simpleItem.OrderInp</td>
+                        <td>
+                           <!-- DetailOrder List (A) -->
+                           <table class="table table-hover">
+                              <thead>
+                                 <tr style="font-weight:bold">
+                                    <td>ProductNo</td>
+                                    <td>ProductName</td>
+                                    <td>Price</td>
+                                    <td>Quantity</td>
+                                    <td>Sum</td>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 @foreach (var detailItem in (List<OrderDetail>)ViewBag.simpleDetailHistory)
+                                 {
+                                    @if (simpleItem.OrderNo.Equals(detailItem.OrderDetailOrderNo))
+                                    {
+                                       <tr>
+                                          <td>@detailItem.OrderDetailProductNo</td>
+                                          <td>
+                                             <a asp-controller="Admin" asp-action="ProductDetail" asp-route-id="@detailItem.OrderDetailProductNo">
+                                                @detailItem.Product.ProductName
+                                             </a>
+                                          </td>
+                                          <td>@(detailItem.Product.ProductPrice)円</td>
+                                          <td>@detailItem.OrderDetailQuantity</td>
+                                          <td>@(detailItem.Product.ProductPrice * detailItem.OrderDetailQuantity)円</td>
+                                       </tr>
+                                    }
+                                 }
+                              </tbody>
+                           </table>
+                           <!-- DetailOrder List (Z) -->
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            }
+            <!-- SimpleOrder List (Z) -->
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Body Right (Z) -->

@@ -1,0 +1,150 @@
+/* ProductDetail Star Rating A */
+.star-rating {
+   font-size: 0;
+   white-space: nowrap;
+   display: inline-block;
+   width: 125px;
+   height: 25px;
+   overflow: hidden;
+   position: relative;
+   background: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDIwIDIwIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cG9seWdvbiBmaWxsPSIjREREREREIiBwb2ludHM9IjEwLDAgMTMuMDksNi41ODMgMjAsNy42MzkgMTUsMTIuNzY0IDE2LjE4LDIwIDEwLDE2LjU4MyAzLjgyLDIwIDUsMTIuNzY0IDAsNy42MzkgNi45MSw2LjU4MyAiLz48L3N2Zz4=');
+   background-size: contain;
+}
+   .star-rating i {
+      opacity: 0;
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      width: 20%;
+      z-index: 1;
+      background: url('data:image/svg+xml;base64,PHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB3aWR0aD0iMjBweCIgaGVpZ2h0PSIyMHB4IiB2aWV3Qm94PSIwIDAgMjAgMjAiIGVuYWJsZS1iYWNrZ3JvdW5kPSJuZXcgMCAwIDIwIDIwIiB4bWw6c3BhY2U9InByZXNlcnZlIj48cG9seWdvbiBmaWxsPSIjRkZERjg4IiBwb2ludHM9IjEwLDAgMTMuMDksNi41ODMgMjAsNy42MzkgMTUsMTIuNzY0IDE2LjE4LDIwIDEwLDE2LjU4MyAzLjgyLDIwIDUsMTIuNzY0IDAsNy42MzkgNi45MSw2LjU4MyAiLz48L3N2Zz4=');
+      background-size: contain;
+   }
+   .star-rating input {
+      -moz-appearance: none;
+      -webkit-appearance: none;
+      opacity: 0;
+      display: inline-block;
+      width: 20%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      z-index: 2;
+      position: relative;
+   }
+      .star-rating input:hover + i,
+      .star-rating input:checked + i {
+         opacity: 1;
+      }
+   .star-rating i ~ i {
+      width: 40%;
+   }
+      .star-rating i ~ i ~ i {
+         width: 60%;
+      }
+         .star-rating i ~ i ~ i ~ i {
+            width: 80%;
+         }
+            .star-rating i ~ i ~ i ~ i ~ i {
+               width: 100%;
+            }
+/* ProductDetail Star Rating Z */
+
+
+/* Frist DropDownList A */
+.dropdown {
+   position: relative;
+   display: inline-block;
+   background-color: #222222;
+}
+.dropdown-content {
+   text-align: center;
+   display: none;
+   position: absolute;
+   right: 0;
+   background-color: #222222;
+   min-width: 120px;
+   z-index: 1;
+}
+   .dropdown-content a {
+      color: white;
+      padding: 10px 5px;
+      text-decoration: none;
+      display: block;
+   }
+      .dropdown-content a:hover {
+         background-color: #f1f1f1;
+         color: black;
+      }
+.dropdown:hover > .dropdown-content {
+   display: block;
+}
+/* Frist DropDownList Z */
+/* Second DropDownList A */
+.dropdownsub {
+   position: relative;
+   display: inline-block;
+   background-color: #222222;
+}
+
+.dropdown-subcontent {
+   display: none;
+   position: absolute;
+   background-color: #222222;
+   right: -160px;
+   top: 0;
+   padding: 10px 5px;
+   z-index: 1;
+}
+
+   .dropdown-subcontent a {
+      color: white;
+      text-decoration: none;
+      display: block;
+   }
+
+      .dropdown-subcontent a:hover {
+         background-color: #222222;
+         color: white;
+      }
+
+.dropdown:hover > .dropdown-content:hover > .dropdown:hover > .dropdown-subcontent {
+   display: block;
+}
+/* Second DropDownList Z */
+
+
+/* Login Modal A */
+.login-modal-wrapper {
+   position: fixed;
+   top: 0;
+   right: 0;
+   bottom: 0;
+   left: 0;
+   background-color: rgba(0, 0, 0, 0.6);
+   z-index: 100;
+   display: none;
+}
+
+.modal-box {
+   position: absolute;
+   top: 20%;
+   left: 35%;
+   background-color: #e6ecf0;
+   padding: 50px 80px 80px 80px;
+   border-radius: 10px;
+   width: 700px;
+   height: auto;
+   text-align: center;
+   margin: 0 auto;
+}
+
+.fa-times {
+   position: absolute;
+   top: 20px;
+   right: 30px;
+   color: rgba(128, 128, 128, 0.46);
+   cursor: pointer;
+}
+/* Login Modal Z */

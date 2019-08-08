@@ -1,0 +1,121 @@
+﻿@model IEnumerable<ShopProject.Models.User>
+@{
+   ViewData["Title"] = "UserList";
+   int no = 0;
+}
+
+<!-- Body Right (A) -->
+<div class="col-lg-10 col-md-10 col-sm-10">
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+         <div style="margin:0px 100px">
+            <h1 style="padding:50px">
+               <a asp-controller="Admin" asp-action="ProductList" style="text-decoration:none;">UserList</a>
+            </h1>
+            <!-- Search A -->
+            <form asp-controller="Admin" asp-action="UserList">
+               <div class="text-center">
+                  <span><input type="radio" name="funnelDel" value="" checked />All　</span>
+                  <span><input type="radio" name="funnelDel" value="1" @(ViewBag.funnelDel.Equals("1") ? "checked" : "") />Exist　</span>
+                  <span><input type="radio" name="funnelDel" value="0" @(ViewBag.funnelDel.Equals("0") ? "checked" : "") />Deleted</span>
+                  <div style="margin:20px 0 70px 0">
+                     Title: <input type="text" name="searchString" value=@ViewBag.searchString>
+                     <input type="submit" value="Search" />
+                  </div>
+               </div>
+            </form>
+            <!-- Search Z -->
+            <!-- User List Table A -->
+            <table class="table table-hover text-center">
+               <thead>
+                  <tr class="bg-primary">
+                     <td>
+                        no
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.UserNo)
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.UserId)
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.UserName)
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.UserAddress1)
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.UserTel)
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.UserMail)
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.UserAuthority)
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.UserDel)
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.UserInp)
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.UserUpd)
+                     </td>
+                  </tr>
+               </thead>
+               <tbody>
+                  @foreach (var item in Model)
+                  {
+                     <tr>
+                        <th class="text-center">
+                           @(no = no + 1)
+                        </th>
+                        <th class="text-center">
+                           @item.UserNo
+                        </th>
+                        <th class="text-center">
+                           <a asp-controller="Admin" asp-action="UserDetail" asp-route-Id="@item.UserNo">
+                              @item.UserId
+                           </a>
+                        </th>
+                        <td>
+                           @item.UserName
+                        </td>
+                        <td>
+                           @item.UserAddress1
+                        </td>
+                        <td>
+                           @item.UserTel
+                        </td>
+                        <td>
+                           @item.UserMail
+                        </td>
+                        <td>
+                           @item.UserAuthority
+                        </td>
+                        @if (item.UserDel.Equals("1"))
+                        {
+                           <td>Exist</td>
+                        }
+                        else
+                        {
+                           <td>Deleted</td>
+                        }
+                        <td>
+                           @item.UserInp
+                        </td>
+                        <td>
+                           @item.UserUpd
+                        </td>
+                     </tr>
+                  }
+               </tbody>
+            </table>
+            <!-- User List Table Z -->
+            <div class="text-center" style="margin:60px 0"></div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Body Right (Z) -->

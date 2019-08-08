@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:App7"
+             x:Class="App7.MainPage">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style 
+                x:Key="key_label"
+                TargetType="Label">
+                <Setter 
+                    Property="TextColor"
+                    Value="Green"/>
+                <Setter 
+                    Property="FontSize"
+                    Value="Large"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
+    <ListView
+        x:Name="ListView_ShopItems"
+        VerticalOptions="FillAndExpand"
+        HorizontalOptions="FillAndExpand">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <ViewCell>
+                    <Grid>
+                        <Label 
+                            Text="{Binding ItemArray[0]}" 
+                            Style="{StaticResource key_label}"
+                            Grid.Row="0" 
+                            Grid.Column="0"/>
+                        <Label 
+                            Text="{Binding ItemArray[1]}"
+                            Style="{StaticResource key_label}"
+                            Grid.Row="0" 
+                            Grid.Column="1"/>
+                        <Label 
+                            Text="{Binding ItemArray[2]}"
+                            TextColor="Blue"
+                            FontSize="Medium"
+                            Grid.Row="0" 
+                            Grid.Column="2"/>
+                 <!--<Label 
+                        Text="{Binding ItemName}" 
+                        Grid.Row="0" 
+                        Grid.Column="0"/>
+                    <Label 
+                        Text="{Binding Cost}"
+                        Grid.Row="0" 
+                        Grid.Column="1"/>
+                    <Label 
+                        Text="{Binding Category}"
+                        Grid.Row="0" 
+                        Grid.Column="2"/>-->
+                    </Grid>
+                </ViewCell>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+
+
+</ContentPage>

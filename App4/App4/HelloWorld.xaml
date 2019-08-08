@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App4.HelloWorld">
+    <ContentPage.Content>
+        <StackLayout
+            VerticalOptions="Center"
+            HorizontalOptions="FillAndExpand">
+            <Entry 
+                x:Name="entry_Name"
+                VerticalOptions="Center"
+                HorizontalOptions ="FillAndExpand"
+                Margin="50,0,50,0"/>
+            <StackLayout Orientation="Horizontal">
+                <Button
+                Text="Say Hello"
+                VerticalOptions="Center"
+                HorizontalOptions ="FillAndExpand"
+                Clicked="btn_SayHello_Clicked"
+                FontSize="Large"
+                BackgroundColor="Aqua"/>
+                <Button
+                    Text="Reset"
+                    VerticalOptions="Center"
+                    HorizontalOptions ="FillAndExpand"
+                    Clicked="btn_Reset_Clicked"/>
+            </StackLayout>
+            <Label 
+                x:Name="label_Hello"
+                Text="Hello Everyone"
+                VerticalOptions="Center" 
+                HorizontalOptions="CenterAndExpand" 
+                HorizontalTextAlignment="Center"
+                BackgroundColor="Gray"
+                TextColor="blue"/>
+        </StackLayout>
+    </ContentPage.Content>
+</ContentPage>

@@ -1,0 +1,130 @@
+﻿@model ShopProject.Models.Product
+@{
+   ViewData["Title"] = "ProductModify";
+   var image = ViewBag.image;
+}
+
+<!-- Body Right (A) -->
+<div class="col-lg-10 col-md-10 col-sm-10">
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 ">
+         <div style="margin:0px 200px">
+            <h1 style="padding:50px; text-align:center">ProductModify</h1>
+            <form asp-controller="Admin" asp-action="ProductModify" asp-route-searchString="@ViewBag.searchString" asp-route-funnelDel="@ViewBag.funnelDel" method="post" enctype="multipart/form-data">
+               <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+               <!-- Product Info Modify Table A -->
+               <table class="table table-hover" style="font-size: 13pt;">
+                  <tr>
+                     <td rowspan="8" width="500">
+                        <img class="blah" src="~/images/@Model.ProductMainImage" width=480 height=375 />
+                        <input type="file" onchange="readURL(this);" name="file1" id="field" class="btn readImage" style="visibility:hidden;" />
+                        File : <label for="field" class="btn btn-default ImageName">@(Model.ProductMainImage == "NoImage.PNG" ? "NoImage" : Model.ProductMainImage)</label>
+                        <input type="button" id="reset" value="Cancel" class="btn btn-warning pull-right DelImage" />
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <th><label asp-for="ProductNo" class="control-label"></label></th>
+                     <td>@Model.ProductNo</td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <th><label asp-for="ProductCategory" class="control-label"></label></th>
+                     <td><select asp-for="ProductCategory" class="form-control" asp-items="ViewBag.ProductCategoryList"></select></td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <th><label asp-for="ProductName" class="control-label"></label></th>
+                     <td>
+                        <input type="text" asp-for="ProductName" class="form-control" placeholder="Name.." />
+                        <span asp-validation-for="ProductName" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <th><label asp-for="ProductPrice" class="control-label"></label></th>
+                     <td>
+                        <input type="number" asp-for="ProductPrice" class="form-control" placeholder="Price.." />
+                        <span asp-validation-for="ProductPrice" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <th><label asp-for="ProductStock" class="control-label"></label></th>
+                     <td>
+                        <input type="number" asp-for="ProductStock" class="form-control" />
+                        <span asp-validation-for="ProductStock" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <th><label asp-for="ProductRemark" class="control-label"></label></th>
+                     <td>
+                        <input type="text" asp-for="ProductRemark" class="form-control" />
+                        <span asp-validation-for="ProductRemark" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <th><label asp-for="ProductDel" class="control-label"></label></th>
+                     <td>
+                        <input type="radio" value="1" asp-for="ProductDel" />Exist　
+                        <input type="radio" value="0" asp-for="ProductDel" />Delete
+                     </td>
+                  </tr>
+               </table>
+               <!-- Product Info Modify Table Z -->
+               <div class="row" style="margin:80px auto;">
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                     <div style="width:480px;height:400px;margin:0 auto">
+                        <img class="blah" src="~/images/@ViewBag.image[0]" width=480 height=375 />
+                        <input type="file" onchange="readURL2(this);" name="file2" id="field2" class="btn readImage" style="visibility:hidden;" />
+                        File : <label for="field2" class="btn btn-default ImageName">@(ViewBag.image[0] == "NoImage.PNG" ? "NoImage" : ViewBag.image[0])</label>
+                        <input type="button" value="Cancel" class="btn btn-warning pull-right DelImage" />
+                     </div>
+                  </div>
+                  <div class="col-lg-6 col-md-6 col-sm-6">
+                     <div style="width:480px;height:400px;margin:0 auto">
+                        <img class="blah" src="~/images/@ViewBag.image[1]" width=480 height=375 />
+                        <input type="file" onchange="readURL3(this);" name="file3" id="field3" class="btn readImage" style="visibility:hidden;" />
+                        File : <label for="field3" class="btn btn-default ImageName">@(ViewBag.image[1] == "NoImage.PNG" ? "NoImage" : ViewBag.image[1])</label>
+                        <input type="button" value="Cancel" class="btn btn-warning pull-right DelImage" />
+                     </div>
+                  </div>
+               </div>
+               <div class="text-center" style="margin:80px 0">
+                  <a asp-controller="Admin" asp-action="ProductList" asp-route-searchString="@ViewBag.searchString" asp-route-funnelDel="@ViewBag.funnelDel" class="btn btn-lg btn-primary" style="padding:10px 200px;margin-right:50px">&lt;&lt; Back</a>
+                  <input type="submit" value="Modify" class="btn btn-warning btn-lg" style="padding:10px 200px" />
+               </div>
+               <input type="hidden" asp-for="ProductNo" />
+               <input type="hidden" asp-for="ProductInp" />
+               <input type="hidden" asp-for="ProductImage" />
+               <input type="hidden" asp-for="ProductMainImage" />
+               <input type="hidden" name="del1" id="del1">
+               <input type="hidden" name="del2" id="del2">
+               <input type="hidden" name="del3" id="del3">;
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Body Right (Z) -->
+
+<script>
+   // delete image A
+   $('.DelImage').click(function () {
+      var ImageIndex = $('.DelImage').index($(this));
+      $('.readImage').eq(ImageIndex).val('');
+      $('.blah').eq(ImageIndex).attr("src", "@Url.Content("~/")images/NoImage.PNG");
+      $('.ImageName').eq(ImageIndex).text("NoImage.PNG");
+      $('#del' + (ImageIndex+1)).val("true");
+   });
+   // delete image Z
+
+   // change image A
+   $('.readImage').change(function () {
+      var ImageIndex = $('.readImage').index($(this));
+      if (this.files && this.files[0]) {
+         var reader = new FileReader();
+         reader.onload = function () {
+            $('.blah').eq(ImageIndex).attr('src', event.target.result).width(480).height(375);
+         };
+         reader.readAsDataURL(this.files[0]);
+      }
+      $('.ImageName').eq(ImageIndex).text(this.files[0].name);
+   });
+   // change image Z
+</script>

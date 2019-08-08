@@ -1,0 +1,128 @@
+﻿@model ShopProject.Models.User
+@using Microsoft.AspNetCore.Http;
+@{
+   ViewData["Title"] = "UserMypage";
+   int no = 0;
+}
+
+<!-- Body Right (A) -->
+<div class="col-lg-10 col-md-10 col-sm-10">
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+         <h1 style="padding:50px; text-align:center">UserMypage</h1>
+         <div style="margin:0px 100px">
+            <form asp-controller="User" asp-action="UserDelete" method="post">
+               <h3>
+                  <a asp-controller="User" asp-action="UserModify" class="btn btn-primary btn-lg">Edit</a>
+                  @if (Context.Session.GetString("Session_UserAuthority") != "1")
+                  {
+                     <input type="submit" class="btn btn-danger btn-lg" value="Delete" />
+                  }
+               </h3>
+            </form>
+            <!-- User Info Table A -->
+            <table class="table table-hover" style="font-size: 13pt;margin:30px 0 50px 0">
+               <tr>
+                  <th rowspan="10" width="500">
+                     <img src="~/images/User.png" width=480 height=375 />
+                  </th>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.UserNo)</th>
+                  <td>@Model.UserNo</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.UserId)</th>
+                  <td>@Model.UserId</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.UserName)</th>
+                  <td>@Model.UserName</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.UserAddress1)</th>
+                  <td>@Model.UserAddress1</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.UserTel)</th>
+                  <td>@Model.UserTel</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.UserMail)</th>
+                  <td>@Model.UserMail</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.UserAuthority)</th>
+                  <td>@Model.UserAuthority</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.UserInp)</th>
+                  <td>@Html.DisplayFor(model => model.UserInp)</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.UserUpd)</th>
+                  <td>@Html.DisplayFor(model => model.UserUpd)</td>
+               </tr>
+            </table>
+            <!-- User Info Table Z -->
+            <!-- SimpleOrder List (A) -->
+            @foreach (var simpleItem in (List<Order>)ViewBag.simpleOrderHistory)
+            {
+               <table class="table table-hover text-center">
+                  <thead>
+                     <tr class="bg-primary" style="font-weight:700">
+                        <td>no</td>
+                        <td>OrderNo</td>
+                        <td>TotalPrice</td>
+                        <td>OrderDate</td>
+                        <td>Detail</td>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td>@(no = no + 1)</td>
+                        <td>@simpleItem.OrderNo</td>
+                        <td>@simpleItem.OrderTotalPrice<z>円</z></td>
+                        <td>@simpleItem.OrderInp</td>
+                        <td>
+                           <!-- DetailOrder List (A) -->
+                           <table class="table table-hover">
+                              <thead>
+                                 <tr style="font-weight:600">
+                                    <td>ProductNo</td>
+                                    <td>ProductName</td>
+                                    <td>Price</td>
+                                    <td>Quantity</td>
+                                    <td>Sum</td>
+                                 </tr>
+                              </thead>
+                              <tbody>
+                                 @foreach (var detailItem in (List<OrderDetail>)ViewBag.simpleDetailHistory)
+                                 {
+                                    @if (simpleItem.OrderNo.Equals(detailItem.OrderDetailOrderNo))
+                                    {
+                                       <tr>
+                                          <td>@detailItem.OrderDetailProductNo</td>
+                                          <td>
+                                             <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@detailItem.OrderDetailProductNo">@detailItem.Product.ProductName</a>
+                                          </td>
+                                          <td>@(detailItem.Product.ProductPrice)円</td>
+                                          <td>@(detailItem.OrderDetailQuantity)個</td>
+                                          <td>@(detailItem.Product.ProductPrice * detailItem.OrderDetailQuantity)円</td>
+                                       </tr>
+                                    }
+                                 }
+                              </tbody>
+                           </table>
+                           <!-- DetailOrder List (Z) -->
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            }
+            <!-- SimpleOrder List (Z) -->
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Body Right (Z) -->

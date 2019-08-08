@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="App5.SecondPage">
+<ContentPage.Content>
+    <StackLayout>
+        <Label Text="Hello, This is 2nd Page"
+            VerticalOptions="CenterAndExpand" 
+            HorizontalOptions="CenterAndExpand" />
+        <Entry
+            x:Name="entry_Name"
+            VerticalOptions="CenterAndExpand" 
+            HorizontalOptions="FillAndExpand"
+            Placeholder="Insert Name"/>
+        <StackLayout
+            Orientation="Horizontal"
+            VerticalOptions="Center"
+            HorizontalOptions="CenterAndExpand">
+            <Button Text="Insert Data"
+                    Clicked="btn_Back_Clicked"/> 
+            <Button Text="Next"
+                    Clicked="btn_Next_Clicked"/>
+        </StackLayout>
+    </StackLayout>
+</ContentPage.Content>
+</ContentPage>

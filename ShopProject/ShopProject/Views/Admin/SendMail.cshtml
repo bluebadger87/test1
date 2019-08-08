@@ -1,0 +1,52 @@
+﻿@model ShopProject.Models.Mail
+@{ 
+  ViewData["Title"] = "SEND MAIL";
+}
+<style>
+   th {
+      height: 60px;
+   }
+</style>
+
+<!-- Body Right (A) -->
+<div class="col-lg-10 col-md-10 col-sm-10">
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+         <div style="margin:0px 300px">
+            <h1 style="padding:50px">
+               <a asp-controller="Admin" asp-action="SendMail" style="text-decoration:none">SEND MAIL</a>
+            </h1>
+            <h2 class="text-center bg-success">@ViewBag.Message</h2>
+            <form asp-action="SendMail">
+               <table class="table table-hover" style="font-size: 13pt; text-indent: 20px;">
+                  <tr>
+                     <th colspan="2" class="bg-info" style="text-align:center"><h3>Mail Form</h3></th>
+                  </tr>
+                  <tr>
+                     <th>From</th>
+                     <th>bluebadger8787@gmail.com</th>
+                  </tr>
+                  <tr>
+                     <th>To</th>
+                     <th><input type="email" size="50" asp-for="To" required></th>
+                  </tr>
+                  <tr>
+                     <th>件名</th>
+                     <th><input type="text" size="50" asp-for="Subject" required></th>
+                  </tr>
+                  <tr>
+                     <th>内容</th>
+                     <th><textarea asp-for="Content" rows="10" cols="80" style="overflow: hidden;" required></textarea></th>
+                  </tr>
+               </table>
+            </form>
+            <div class="row" style="margin-top:80px">
+               <div class="col-lg-3"></div>
+               <div class="col-lg-6"><input type="submit" name="btn" value="送る" class="btn btn-primary btn-lg btn-block" style="line-height: 2;"></div>
+            </div>
+         </div>
+      </div>
+      <!-- Mail Table (Z) -->
+   </div>
+</div>
+<!-- Body Right (Z) -->

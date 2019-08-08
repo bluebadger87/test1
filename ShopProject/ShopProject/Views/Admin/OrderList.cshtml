@@ -1,0 +1,198 @@
+﻿@model IEnumerable<ShopProject.Models.OrderDetail>
+@{
+   ViewData["Title"] = "OrderList";
+   int no = 0;
+   int i = 1;
+}
+
+<!-- Body Right (A) -->
+<div class="col-lg-10 col-md-10 col-sm-10">
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+         <div style="margin:0px 100px">
+            @*<h4 id="coordinate" style="position:fixed;right:0;margin-right:20px">Yの座標 = <br />0</h4>*@
+            <h1 style="padding:50px">
+               <a asp-controller="Admin" asp-action="OrderList" style="text-decoration:none;">OrderList</a>
+            </h1>
+            <!-- Icon Cards (A) -->
+            <div class="container">
+               <div class="row">
+                  <div class="col-lg-3">
+                     <a asp-controller="Admin" asp-action="OrderList" asp-route-funnel="1" style="color:black;text-decoration:none">
+                        <div class="card text-center">
+                           <div class="card-body bg-danger" style="padding:15px 0px">
+                              <h2 class="card-title">注文完了</h2>
+                              <h3 class="card-title">@(ViewBag.orderstatus1)件</h3>
+                           </div>
+                        </div>
+                     </a>
+                  </div>
+                  <div class="col-lg-1"></div>
+                  <div class="col-lg-3">
+                     <a asp-controller="Admin" asp-action="OrderList" asp-route-funnel="2" style="color:black;text-decoration:none">
+                        <div class="card text-center">
+                           <div class="card-body bg-warning" style="padding:15px 0px">
+                              <h2 class="card-title">配送中</h2>
+                              <h3 class="card-title">@(ViewBag.orderstatus2)件</h3>
+                           </div>
+                        </div>
+                     </a>
+                  </div>
+                  <div class="col-lg-1"></div>
+                  <div class="col-lg-3">
+                     <a asp-controller="Admin" asp-action="OrderList" asp-route-funnel="3" style="color:black;text-decoration:none">
+                        <div class="card text-center">
+                           <div class="card-body bg-success" style="padding:15px 0px">
+                              <h2 class="card-title">配送完了</h2>
+                              <h3 class="card-title">@(ViewBag.orderstatus3)件</h3>
+                           </div>
+                        </div>
+                     </a>
+                  </div>
+               </div>
+            </div>
+            <!-- Icon Cards (Z) -->
+            <!-- Simple Table (A) -->
+            <div style="margin:80px 0">
+               @foreach (var SimpleItem in (List<Order>)ViewBag.orderSimpleList)
+               {
+                  <table class="table table-hover text-center">
+                     <thead>
+                        <tr class="bg-primary" style="font-weight:700">
+                           <td>
+                              no
+                           </td>
+                           <td>
+                              @Html.DisplayNameFor(model => model.Order.OrderNo)
+                           </td>
+                           <td>
+                              @Html.DisplayNameFor(model => model.Order.User.UserId)
+                           </td>
+                           <td>
+                              @Html.DisplayNameFor(model => model.Order.User.UserAddress1)
+                           </td>
+                           <td>
+                              @Html.DisplayNameFor(model => model.Order.User.UserTel)
+                           </td>
+                           <td>
+                              @Html.DisplayNameFor(model => model.Order.OrderTotalPrice)
+                           </td>
+                           <td>
+                              @Html.DisplayNameFor(model => model.OrderDetailInp)
+                           </td>
+                           <td>
+                              Detail
+                           </td>
+                           <td>
+                              @Html.DisplayNameFor(model => model.Order.OrderDelivery)
+                           </td>
+                        </tr>
+                     </thead>
+                     <tbody>
+                        <tr>
+                           <td>
+                              @(no = no + 1)
+                           </td>
+                           <td>
+                              @SimpleItem.OrderNo
+                           </td>
+                           <td>
+                              <a asp-controller="Admin" asp-action="UserDetail" asp-route-Id="@SimpleItem.User.UserNo">
+                                 @SimpleItem.User.UserId
+                              </a>
+                           </td>
+                           <td>
+                              @SimpleItem.User.UserAddress1
+                           </td>
+                           <td>
+                              @SimpleItem.User.UserTel
+                           </td>
+                           <td>
+                              @SimpleItem.OrderTotalPrice<z>円</z>
+                           </td>
+                           <td>
+                              @SimpleItem.OrderInp
+                           </td>
+                           <td>
+                              <!-- Detail Table (A) -->
+                              <table class="table table-hover text-center">
+                                 <thead style="font-weight:600">
+                                    <tr>
+                                       <td>@Html.DisplayNameFor(model => model.OrderDetailProductNo)</td>
+                                       <td>@Html.DisplayNameFor(model => model.Product.ProductName)</td>
+                                       <td>@Html.DisplayNameFor(model => model.Product.ProductPrice)</td>
+                                       <td>Quantity</td>
+                                       <td>Sum</td>
+                                    </tr>
+                                 </thead>
+                                 @foreach (var DetailItem in (List<OrderDetail>)ViewBag.orderDetailList)
+                                 {
+                                    @if (SimpleItem.OrderNo.Equals(DetailItem.OrderDetailOrderNo))
+                                    {
+                                       <tbody>
+                                          <tr>
+                                             <td>@DetailItem.OrderDetailProductNo</td>
+                                             <td>
+                                                <a asp-controller="Admin" asp-action="ProductDetail" asp-route-Id="@DetailItem.OrderDetailProductNo">
+                                                   @DetailItem.Product.ProductName
+                                                </a>
+                                             </td>
+                                             <td>@(DetailItem.Product.ProductPrice)円</td>
+                                             <td>@(DetailItem.OrderDetailQuantity)個</td>
+                                             <td>@(DetailItem.OrderDetailQuantity * DetailItem.Product.ProductPrice)円</td>
+                                          </tr>
+                                       </tbody>
+                                    }
+                                 }
+                              </table>
+                              <!-- Detail Table (Z) -->
+                           </td>
+                           <td>
+                              <form asp-controller="Admin" asp-action="OrderList" asp-route-Id="@SimpleItem.OrderNo" asp-route-funnel="@ViewBag.funnel">
+                                 @if (SimpleItem.OrderDelivery.Equals("1"))
+                                 {
+                                    <div class="bg-danger" style="padding:7px 0px">注文完了</div>
+                                 }
+                                 else if (SimpleItem.OrderDelivery.Equals("2"))
+                                 {
+                                    <div class="bg-warning" style="padding:7px 0px">配送中</div>
+                                 }
+                                 else
+                                 {
+                                    <div class="bg-success" style="padding:7px 0px">配送完了</div>
+                                 }
+                                 <select asp-for="@SimpleItem.OrderDelivery" name="OrderDelivery" data-val="@SimpleItem.OrderNo" class="form-control changebtn">
+                                    <option value="1">注文完了 </option>
+                                    <option value="2">配送中</option>
+                                    <option value="3">配送完了</option>
+                                 </select>
+                                 <input type="hidden" name="scroll" class="scrollpo" />
+                                 <button type="submit" id="@SimpleItem.OrderNo" class="btn btn-block btn-default" style="visibility:hidden;">Change</button>
+                                 @{i = i + 1;}
+                              </form>
+                           </td>
+                        </tr>
+                     </tbody>
+                  </table>
+               }
+            </div>
+            <!-- Simple Table (Z) -->
+            <div class="text-center">
+               <div id="top-btn" style="cursor:pointer">- Top -</div>
+            </div>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Body Right (Z) -->
+
+<script type="text/javascript">
+    //Controllerに渡す今のScroll位置
+   $(function () {
+      $('.changebtn').change(function () {
+         var aa = $(this).attr("data-val");
+         $('.scrollpo').val(document.documentElement.scrollTop);
+         $('#'+aa).click();
+      });
+   });
+</script>

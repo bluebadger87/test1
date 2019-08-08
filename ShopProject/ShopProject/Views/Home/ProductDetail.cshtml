@@ -1,0 +1,288 @@
+﻿@model ShopProject.Models.Product
+@using Microsoft.AspNetCore.Http;
+@{
+   ViewData["Title"] = "ProductDetail";
+   int currentStock = ViewBag.CurrentStock;
+   double score = ViewBag.socre;
+   int no = 0;
+   int sc = 1;
+}
+
+<!-- Body Right (A) -->
+<div class="col-lg-10 col-md-10 col-sm-10">
+   <!-- Product Simple Info & Cart Input A -->
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+         <h1 class="text-center" style="padding:50px">ProductDetail</h1>
+         <div style="margin:0px 100px">
+            <!-- Product Simple Info A -->
+            <table class="table table-hover" style="font-size: 13pt;">
+               <tr>
+                  <th rowspan="8" width="500">
+                     <img src="~/images/@Model.ProductMainImage" width=480 height=375 /><br />
+                     <a href="/images/@Model.ProductMainImage" download>Down Image : @Model.ProductName</a>
+                  </th>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.ProductNo)</th>
+                  <td>@Html.DisplayFor(model => model.ProductNo)</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.ProductCategory)</th>
+                  <td>@Html.DisplayFor(model => model.ProductCategoryList.Name)</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.ProductName)</th>
+                  <td>@Html.DisplayFor(model => model.ProductName)</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.ProductPrice)</th>
+                  <td>@Html.DisplayFor(model => model.ProductPrice)円</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.ProductStock)</th>
+                  <td>@(currentStock)個</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.ProductRemark)</th>
+                  <td>@Html.DisplayFor(model => model.ProductRemark)</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th> @Html.DisplayNameFor(model => model.ProductDel)</th>
+                  @if (Model.ProductDel=="1")
+                  {
+                     <td>Exist</td>
+                  }
+                  else
+                  {
+                     <td>Deleted</td>
+                  }
+               </tr>
+            </table>
+            <!-- Product Simple Info Z -->
+            <!-- Product Star Score A -->
+            <a id="goreview" href="#review" style="text-decoration:none">
+               @for (int i = 1; i <= 5; i++)
+               {
+                  if (score >= 1)
+                  {
+                     <span class="fa fa-star" style="color: orange;font-size:30px;"></span>
+                     score = score - 1;
+                  }
+                  else if (score > 0 && score < 0.5)
+                  {
+                     <span class="fa fa-star" style="font-size:23px;color:gainsboro; "></span>
+                     score = 0;
+                  }
+                  else if (score >= 0.5 && score < 1)
+                  {
+                     <span class="fa fa-star-half-o" style="color: orange;font-size:30px;"></span>
+                     score = 0;
+                  }
+                  else
+                  {
+                     <span class="fa fa-star" style="font-size:23px;color:gainsboro; "></span>
+                  }
+               }
+               @if (ViewBag.socre == null)
+               {
+                  <span>&emsp;0 / 5</span>
+               }
+               else
+               {
+                  <span>
+                     &emsp;@(ViewBag.socre) / 5&emsp;
+                     <span style="padding-left:2em">@ViewBag.comment.Count reviews</span>
+                  </span>
+               }
+            </a>
+            <!-- Product Star Score Z -->
+            <!-- Product Input Cart A -->
+            <form asp-controller="Home" asp-action="ClickCartInput" asp-route-id="@Model.ProductNo" asp-route-page="@ViewBag.page" asp-route-search="@ViewBag.search" asp-route-sort="@ViewBag.sort">
+               <div class="text-right">
+                  <h4>
+                     @if (currentStock > 0)
+                     {
+                        <label asp-for="ProductStock" class="control-label" style="font-size:20px"></label>
+                        <select name="proNum" style="font-size:20px">
+                           @for (int i = 1; i <= currentStock; i++)
+                           {
+                              <option value="@i">@i</option>
+                           }
+                           <option selected hidden value="1">1</option>
+                        </select><span>&emsp;</span>
+                        if (Context.Session.GetString("Session_UserAuthority") != "1")
+                        {
+                           <input type="submit" class="btn btn-primary" style="font-size:20px;padding:10px 35px;" value="Cart">
+                        }
+                     }
+                  </h4>&emsp;
+               </div>
+            </form>
+         </div>
+      </div>
+      <!-- Product Simple Info & Cart Input Z -->
+      <!-- Product Details A -->
+      <div class="row">
+         <div class="col-lg-12 col-md-12 col-sm-12">
+            <div style="margin:0px 100px">
+               <details class="text-center" id="details" open>
+                  <summary style="cursor: pointer;font-size:25px">Display Detail</summary>
+                  <p>
+                     Lorem ipsum dolor sit amet, <br />
+                     @foreach (var item in ViewBag.image)
+                     {
+                        @if (item.ProductImageName != "NoImage.PNG")
+                        {
+                           <img src="~/images/@item.ProductImageName" style="max-width:1200px;margin:30px 0" /><br />
+                        }
+                     }
+                  </p>
+                  <button class="btn btn-warning btn-lg" onclick="closeDetails()">Close Detail</button>
+               </details>
+            </div>
+         </div>
+      </div>
+      <!-- Product Detail Z -->
+      <!-- Product Comment & Wirte Review A -->
+      <div class="row" style="margin-top:80px">
+         <div class="col-lg-12 col-md-12 col-sm-12">
+            <div style="margin:0px 100px">
+               <div id="review" class="form-group text-center" style="font-size:30px;background-color:gainsboro;padding:10px 0px">Comment</div>
+               <!-- Product Comment A -->
+               <div class="form-group" style="padding:0 1em">
+                  @foreach (var item in (List<ProductComment>)ViewBag.comment)
+                  {
+                     <div>
+                        @(no = no + 1).
+                        <img src="~/images/User.png" width="30" height="30">&nbsp;
+                        @if (item.CommentUserNo.Equals(Context.Session.GetInt32("Session_UserNo")))
+                        {
+                           <span style="background-color:lightskyblue; color:white;font-weight:bold">@item.User.UserId</span>
+                        }
+                        else
+                        {
+                           <span>@item.User.UserId</span>
+                        }
+                        <span>&emsp;</span>
+                        @{double star = item.CommnetScore;}
+                        @for (int i = 1; i <= 5; i++)
+                        {
+                           @if (star >= 1)
+                           {
+                              <span class="fa fa-star" style="color: orange;font-size:27px;"></span>
+                              star = star - 1;
+                           }
+                           else
+                           {
+                              <span class="fa fa-star" style="font-size:20px;color:gainsboro; "></span>
+                           }
+                        }
+                        <span class="pull-right" style="padding-right:1em">
+                           <small>@item.CommentUpdDate&emsp;</small>
+                        </span>
+                     </div>
+                     <div style="padding-left:1em">
+                        @item.CommnetContent
+                     </div>
+                     <!-- Edit review A -->
+                     @if (item.CommentUserNo.Equals(Context.Session.GetInt32("Session_UserNo")))
+                     {
+                        <div style="margin-bottom:40px">
+                           <form asp-controller="Home" asp-action="ProductCommentEdit" asp-route-id="@item.CommentId" asp-route-proId="@Model.ProductNo">
+                              <details class="bg-warning">
+                                 <summary class="pull-right" style="cursor: pointer;font-weight:bold">Edit review</summary>
+                                 <div>
+                                    <span style="margin:40px"><strong>Rating</strong></span>
+                                    <span class="star-rating">
+                                       <input type="radio" name="score" value="1" @(item.CommnetScore == 1 ? "checked" : "")><i></i>
+                                       <input type="radio" name="score" value="2" @(item.CommnetScore == 2 ? "checked" : "")><i></i>
+                                       <input type="radio" name="score" value="3" @(item.CommnetScore == 3 ? "checked" : "")><i></i>
+                                       <input type="radio" name="score" value="4" @(item.CommnetScore == 4 ? "checked" : "")><i></i>
+                                       <input type="radio" name="score" value="5" @(item.CommnetScore == 5 ? "checked" : "")><i></i>
+                                    </span>
+                                 </div>
+                                 <textarea class="form-control" name="comment" rows="6" style="font-size:18px;">@item.CommnetContent</textarea>
+                                 <button class="btn btn-success pull-right modiComment" name="btn" value="modi" style="width:100px; margin-left:20px">Edit</button>
+                                 <button class="btn btn-default pull-right modiComment" name="btn" value="del"  style="width:100px;">Delete</button>
+                              </details>
+                              <input type="hidden" name="scroll" class="wow2" />
+                           </form>
+                        </div>
+                        sc = sc + 1;
+                     }
+                     <!-- Edit review Z -->
+                     <hr />
+                  }
+               </div>
+               <!-- Product Comment Z -->
+               <!-- Write Review A -->
+               <form asp-controller="Home" asp-action="ProductCommentRegister" asp-route-productId="@Model.ProductNo">
+                  @if (ViewBag.orderConf.Count > ViewBag.commentConf.Count)
+                  {
+                     <div class="form-group text-center bg-success" style="font-size:30px;padding:10px 0px;margin-top:80px">
+                        Write review
+                     </div>
+                     <div class="form-group">
+                        <span style="width:70px; padding-top:0.2em"><strong>Rating</strong></span>
+                        <span style="width:90px;">
+                           <span class="star-rating">
+                              <input checked type="radio" name="score" value="1"><i></i>
+                              <input type="radio" name="score" value="2"><i></i>
+                              <input type="radio" name="score" value="3"><i></i>
+                              <input type="radio" name="score" value="4"><i></i>
+                              <input type="radio" name="score" value="5"><i></i>
+                           </span>
+                        </span>
+                     </div>
+                     <div class="form-group">
+                        <textarea class="form-control" name="comment" rows="6" style="font-size:18px;"></textarea>
+                     </div>
+                     <div class="form-group">
+                        <button type="submit" class="btn btn-primary" id="regiComment" style="padding:10px 70px">OK</button>
+                        <input type="hidden" name="scroll" id="wow" />
+                     </div>
+                  }
+                  <div class="form-group text-center">
+                     <div id="top-btn" style="cursor:pointer">- Top -</div>
+                  </div>
+               </form>
+               <!-- Write Review Z -->
+            </div>
+            <!-- Product Comment & Wirte Review Z -->
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Body Right (Z) -->
+
+<script>
+   $(function () {
+      //Detail Close Button A
+      $('#closeBtn').click(function () {
+         $('#details').removeAttr('open'); //removeAttribute("open")はerror
+      });
+      //Detail Close Button Z
+      //Comment Scroll位置渡す A
+      $('#regiComment').click(function () {
+         $('#wow').val(document.documentElement.scrollTop);
+      });
+      $('.modiComment').click(function () {
+         $('.wow2').val(document.documentElement.scrollTop);
+      });
+      //Comment Scroll位置渡す Z
+      //btn Animate A
+      $('#top-btn').click(function () {
+         $('html,body').animate({
+            'scrollTop': 0
+         }, 'slow');
+      });
+      $('#goreview').click(function () {
+         var position = $('#review').offset().top;
+         $('html, body').animate({
+            'scrollTop': position
+         }, 500);
+      });
+       //btn Animate Z
+   });
+</script>

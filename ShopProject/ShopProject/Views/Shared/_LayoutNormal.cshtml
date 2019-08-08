@@ -1,0 +1,294 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ShopProject</title>
+    @using Microsoft.AspNetCore.Http;
+    @using ShopProject.Models;
+    @using ShopProject.ViewModels;
+    @using System.Collections.Generic;
+    @using System.Linq;
+    @using Microsoft.EntityFrameworkCore;
+    @using ShopProject.DataContext;
+
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-2.2.0.min.js"></script>
+    <script src="https://ajax.aspnetcdn.com/ajax/bootstrap/3.3.7/bootstrap.min.js"></script>
+    <script src="~/js/site.min.js" asp-append-version="true"></script>
+    <link href="~/css/site.min.css" rel="stylesheet" />
+</head>
+
+<body>
+    <header>
+        <!-- scroll indicator A -->
+        @if (ViewBag.ScrollIndicator == "true")
+        {
+            <div style="position:fixed;height: 8px;background-color:#ccc; width: 100%; height: 8px; z-index:100">
+                <div class="progress-bar" id="myBar" style="position:fixed;height: 8px;background: #4caf50;width: 0%;"></div>
+            </div>
+        }
+        <!-- scroll indicator Z -->
+        <nav class="navbar navbar-inverse navbar-default">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li><a asp-controller="Home" asp-action="Index" style="margin-left:30px"><h3>ShopProject</h3></a></li>
+                    <li><a asp-controller="Home" asp-action="ProductList"><h3>Product</h3></a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li>
+                        <form asp-controller="Home" asp-action="ProductList" class="form-inline" method="get" style="padding:10px 15px;margin:10px">
+                            <input type="text" name="search" class="form-control" placeholder="Search..">
+                            <button type="submit" class="btn"><i class="fa fa-search"></i></button>
+                        </form>
+                    </li>
+                    <li class="dropdown">
+                        <a asp-controller="Home" asp-action="ProductCart">
+                            <h3>
+                                Cart
+                                @if (Context.Session.GetObjectFromJson<List<CartSession>>("cart") != null)
+                                {
+                                    <span class="badge">
+                                        @(Context.Session.GetObjectFromJson<List<CartSession>>("cart").Count)
+                                    </span>
+                                }
+                            </h3>
+                        </a>
+                        @if (!(Context.Session.GetObjectFromJson<List<CartSession>>("cart") == null))
+                        {
+                            <div class="dropdown-content">
+                                @using (var db = new ShopDbContext())
+                                {
+                                    int a = 0;
+                                    foreach (var item in Context.Session.GetObjectFromJson<List<CartSession>>("cart"))
+                                    {
+                                        foreach (var item2 in db.Product.Include(o => o.ProductCategoryList).ToList())
+                                        {
+                                            if (item.ProductId == item2.ProductNo)
+                                            {
+                                                <div class="dropdown">
+                                                    <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@item.ProductId">
+                                                        @(a = a + 1).
+                                                        <img class="card-img-top" src="~/images/@item2.ProductMainImage" style="height:50px;width:70px">
+                                                        @(item2.ProductName)
+                                                        @(item.ProductCount)個
+                                                    </a>
+                                                    <div class="dropdown-subcontent text-center">
+                                                        <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@item.ProductId" class="dropdown-subcontent">
+                                                            <div>Category : @(item2.ProductCategoryList.Name)</div>
+                                                            <div>Name : @(item2.ProductName)</div>
+                                                            <div><img class="card-img-top" src="~/images/@item2.ProductMainImage" style="height:250px;width:300px"></div>
+                                                            <div>Price : @(item2.ProductPrice)円</div>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            }
+                                        }
+                                    }
+                                }
+                            </div>
+                        }
+                    </li>
+                    @if (Context.Session.GetString("Session_UserId") == null)
+                    {
+                        <li><a asp-controller="User" asp-action="UserRegister"><h3>Register</h3></a></li>
+                        <!--<li><a asp-controller="User" asp-action="UserLogin"><h3>Log in</h3></a></li>-->
+                        <li id="login-show" class="login" style="cursor: pointer;"><a style=" margin-right:40px"><h3>Log in</h3></a></li>
+                    }
+                    else
+                    {
+                        <li class="dropdown">
+                            <a asp-controller="User" asp-action="UserMypage" class="dropdown-content">
+                                <h3>Welcome! @Context.Session.GetString("Session_UserId")</h3>
+                            </a>
+                            <div class="dropdown-content" style=" min-width: 200px;left:0">
+                                <a asp-controller="User" asp-action="UserMypage">Mypage</a>
+                                <a asp-controller="User" asp-action="UserModify">Edit</a>
+                            </div>
+                        </li>
+                        <li><a asp-controller="User" asp-action="UserLogout" style="margin-right:40px"><h3>Log out</h3></a></li>
+                    }
+                </ul>
+            </div>
+            <!-- Login Modal A -->
+            <div id="login-modal" class="login-modal-wrapper">
+                <div class="modal-box">
+                    <!-- close modal A -->
+                    <div class="close-modal">
+                        <i class="fa fa-2x fa-times"></i>
+                    </div>
+                    <!-- close modal Z -->
+                    <div id="login-form">
+                        <h1 style="padding:50px">Login</h1>
+                        <form id="loginForm">
+                            <input name="id" class="form-control" style="width:400px;margin: 0 auto;height:40px;margin-bottom:30px" type="text" placeholder="Insert ID..">
+                            <input name="password" class="form-control" style="width:400px;margin: 0 auto;height:40px;" type="password" placeholder="Insert Password..">
+                            <button type="submit" id="loginbtn" class="btn btn-success" style="padding:15px 50px;margin:55px 0 10px 0;font-size:20px">Sign in</button>
+                            <p id="message"></p>
+                        </form>
+                        <a asp-controller="User" asp-action="UserRegister">New customer? Start here</a>
+                    </div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+            <!-- Login Modal Z -->
+        </nav>
+    </header>
+    <main>
+        <div class="container-fluid">
+            <div class="row">
+                <!-- Body Left Side Category (A) -->
+                <div class="col-lg-2 col-md-2 col-sm-2">
+                    <h1 class="text-center" style="padding:50px 0px">
+                        <a href="#">Normal</a>
+                    </h1>
+                    <div class="list-group text-center">
+                        <a href="#" class="list-group-item">Bedroom</a>
+                        <a href="#" class="list-group-item">Kitchen</a>
+                        <a href="#" class="list-group-item">Bathroom</a>
+                        <a href="#" class="list-group-item">Outdoor</a>
+                        <a href="#" class="list-group-item">Decorations</a>
+                        <a href="#" class="list-group-item">Dining</a>
+                        <a href="#" class="list-group-item">Living</a>
+                        <a href="#" class="list-group-item">Lighting</a>
+                        <a href="#" class="list-group-item">Storage</a>
+                        <a href="#" class="list-group-item">ETC</a>
+                        @*<div class="list-group-item" style="height:80px;">
+                                <div class="dropdown" style="float:left;">
+                                    <button class="btn" style="cursor: pointer;">Left</button>
+                                    <div class="dropdown-content" style="left:0px">
+                                        <a href="#">Link 1</a>
+                                        <a href="#">Link 2</a>
+                                        <a href="#">Link 3</a>
+                                    </div>
+                                </div>
+                                <div class="dropdown">
+                                    <button class="btn" style="cursor: pointer;">Center</button>
+                                    <div class="dropdown-content" style="left: -50%;">
+                                        <a href="#">Link 4</a>
+                                        <a href="#">Link 5</a>
+                                        <a href="#">Link 6</a>
+                                    </div>
+                                </div>
+                                <div class="dropdown" style="float:right;">
+                                    <button class="btn" style="cursor: pointer;">Right</button>
+                                    <div class="dropdown-content">
+                                        <a href="#">Link 7</a>
+                                        <a href="#">Link 8</a>
+                                        <a href="#">Link 9</a>
+                                    </div>
+                                </div>
+                            </div>*@
+                    </div>
+                </div>
+                <!-- Body Left Side Category (Z) -->
+                @RenderBody()
+            </div>
+        </div>
+    </main>
+    <hr />
+
+    <footer class="py-5 bg-dark" style="padding:80px">
+        <div class="container">
+            <p class="m-0 text-center text-white">Copyright &copy; Your	Website 2017</p>
+        </div>
+    </footer>
+
+    <script>
+       //記憶したScroll位置を呼び出す -> orderlist
+      document.documentElement.scrollTop = document.body.scrollTop = '@(ViewBag.scroll)';
+
+      //現在のScroll Position
+      window.onscroll = function () { ScrollFunction2();};
+      function ScrollFunction2() {
+      //Scroll Indicator
+      var winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      var height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      var scrolled = (winScroll / height) * 100;
+      document.getElementById("myBar").style.width = scrolled + "%";
+      }
+
+      const url = '@Url.Content("~/")' + "ShopU/UserLoginModal";
+      $(function () {
+         $('#login-show').click(function () {
+               $('#login-modal').fadeIn();
+         });
+         $('.close-modal').click(function () {
+               $('#login-modal').fadeOut();
+         });
+         //注文するときLoginできてないと
+         $('#orderbtn').click(function (event) {
+               event.preventDefault();
+               if ('@(ViewBag.sessionUserNo)' === '') {
+                  $('#login-modal').fadeIn();
+               }
+               else {
+                  $('#orderbtnForm').submit();
+               }
+         });
+      });
+
+      $("#loginForm").submit(function (event) {
+         event.preventDefault();
+         const $this = $(this);
+         const data = $this.serialize();
+
+         $.ajax({
+            type: 'post',
+            url: url + '?' + data,
+            success: function (result) {
+               $this[0].reset()
+               // Success
+               if (result === 1) {
+                  $('#login-modal').fadeOut();
+                  swal({
+                     title: "Welcome",
+                     text: "Longin Success",
+                     icon: "success",
+                     buttons: false,
+                     timer: 1500
+                  });
+                  window.setTimeout(function () { location.reload() }, 1400);
+               }
+               else if (result === 2) {
+                  $('#login-modal').fadeOut();
+                  swal({
+                     title: "Welcome",
+                     text: "Longin Success",
+                     icon: "success",
+                     buttons: false,
+                     timer: 1500
+                  });
+                  window.setTimeout(function () { location.reload() }, 1400);
+               }
+               // Fail
+               else if (result === 3) {
+                  swal("Check your ID & Password", "", "error");
+               }
+               else {
+                  swal("Insert your ID & Password", "", "error");
+               }
+            }
+         });
+      });
+    </script>
+</body>
+</html>

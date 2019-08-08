@@ -1,0 +1,9 @@
+﻿@using Microsoft.AspNetCore.Http;
+@if (Context.Session.GetString("Session_UserAuthority") == "1")
+{
+    Layout = "_LayoutAdmin";
+}
+else
+{
+    Layout = "_LayoutNormal";
+}

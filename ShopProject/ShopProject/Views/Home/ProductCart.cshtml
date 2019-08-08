@@ -1,0 +1,148 @@
+﻿@model IEnumerable<ShopProject.Models.Product>
+@using ShopProject.ViewModels;
+@{
+   ViewData["Title"] = "ProductCart";
+   int no = 0;
+   int totalsum = 0;
+   int count = 0;
+}
+
+<!-- Body Right (A) -->
+<div class="col-lg-10 col-md-10 col-sm-10">
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+         <h1 style="padding:50px">ProductCart</h1>
+         <div style="margin:0px 100px">
+            <!-- Table A -->
+            <table class="table text-center">
+               <thead>
+                  <tr class="bg-primary" style="font-weight:700">
+                     <td>
+                        no
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.ProductImage)
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.ProductCategory)
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.ProductName)
+                     </td>
+                     <td>
+                        @Html.DisplayNameFor(model => model.ProductPrice)
+                     </td>
+                     <td>
+                        Num
+                     </td>
+                     <td>
+                        Sum
+                     </td>
+                     <td>
+                        Delete
+                     </td>
+                  </tr>
+               </thead>
+               @if (Model != null)
+               {
+                  <tbody>
+                     @foreach (var item in Model)
+                     {
+                        <tr>
+                           <td style="vertical-align:middle">
+                              @(no = no + 1)
+                           </td>
+                           <td style="vertical-align:middle">
+                              <div class="dropdown">
+                                 <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@item.ProductNo">
+                                    <img class="card-img-top img-thumbnail" src="~/images/@item.ProductMainImage" style="height:100px; width:100px">
+                                 </a>
+                                 <div class="dropdown-content" style="width:400px; background-color:#f9f9f9;color:black;left:30px">
+                                    <img src="~/images/@item.ProductMainImage" alt="Cinque Terre" width="400" height="300">
+                                    <div class="text-center" style="padding: 15px;">@item.ProductName</div>
+                                 </div>
+                              </div>
+                           </td>
+                           <td style="vertical-align:middle">
+                              @Html.DisplayFor(modelItem => item.ProductCategoryList.Name)
+                           </td>
+                           <td style="vertical-align:middle">
+                              <a asp-controller="Home" asp-action="ProductDetail" asp-route-id="@item.ProductNo">
+                                 @Html.DisplayFor(modelItem => item.ProductName)
+                              </a>
+                           </td>
+                           <td style="vertical-align:middle">
+                              @Html.DisplayFor(modelItem => item.ProductPrice)円
+                           </td>
+                           @foreach (var item2 in (List<CartSession>)ViewBag.MapCartSession)
+                           {
+                              @if (item.ProductNo.Equals(item2.ProductId))
+                              {
+
+                                 <td style="vertical-align:middle">
+                                    <select name="cartCount" onChange="location.href='@(Url.Content("~/"))Home/CartChangeCount'+this.options [this.selectedIndex] .value;">
+                                       @if (ViewBag.currentStock[count] < item2.ProductCount)
+                                       {
+                                          for (int a = 1; a <= ViewBag.currentStock[count]; a++)
+                                          {
+                                             <option value="?id=@(item2.ProductId)&&cartCount=@(a)" selected="@(a ==ViewBag.currentStock[count] )">@(a)個</option>
+                                          }
+                                       }
+                                       else
+                                       {
+                                          for (int a = 1; a <= ViewBag.currentStock[count]; a++)
+                                          {
+                                             <option value="?id=@(item2.ProductId)&&cartCount=@(a)" selected="@(a == item2.ProductCount)">@(a)個</option>
+                                          }
+                                       }
+                                    </select>
+                                    @if (ViewBag.currentStock[count] <  item2.ProductCount)
+                                    {
+                                       <br /><span style="font-weight:bold;color:red">Not Enough Stock</span>
+                                       <br /><span style="font-weight:bold;color:red">Maximum : @(ViewBag.currentStock[count])個</span>
+                                    }
+                                 </td>
+                                 <td style="vertical-align:middle">
+                                    @(item2.ProductCount * item.ProductPrice)円
+                                 </td>
+                                 totalsum = item2.ProductCount * item.ProductPrice + totalsum;
+                                 count = count + 1;
+                              }
+                           }
+                           <td style="vertical-align:middle">
+                              <a asp-controller="Home" asp-action="ClickCartDelete" asp-route-Id="@item.ProductNo" class="btn btn-danger">delete</a>
+                           </td>
+                        </tr>
+                     }
+                  </tbody>
+               }
+            </table>
+            <!-- Table Z -->
+            <!-- Total Price & Order A -->
+            @if (Model == null)
+            {
+               <div class="text-right">
+                  <h1>Total : 0円</h1>
+               </div>
+            }
+            else
+            {
+               <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+               <div class="text-right">
+                  <h1>Total : @(totalsum)円</h1>
+               </div>
+               <div>
+                  @if (Model.Sum(i => i.ProductPrice) != 0)
+                  {
+                     <form id="orderbtnForm" asp-controller="Home" asp-action="ProductOrderEnd" asp-route-totalsum="@totalsum">
+                        <button id="orderbtn" class="btn btn-primary btn-lg center-block" style="padding:15px 100px;margin-top:80px">Order</button>
+                     </form>
+                  }
+               </div>
+            }
+            <!-- Total Price & Order Z -->
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Body Right (Z) -->

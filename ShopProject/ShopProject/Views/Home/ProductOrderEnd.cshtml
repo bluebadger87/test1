@@ -1,0 +1,34 @@
+﻿@{
+   ViewData["Title"] = "order";
+}
+
+<!-- Body Right (A) -->
+@if (ViewBag.message == null)
+{
+   <div class="col-lg-10 col-md-10 col-sm-10">
+      <div class="row">
+         <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+            <div style="margin:0px 100px">
+               <div style="padding:30px"></div>
+               <h1 class="text-center bg-success" style="padding:20px; margin-top:100px;font-size:50px">Complete an order</h1>
+               <h1 class="text-center" style="margin-top:50px">Thank You</h1>
+            </div>
+         </div>
+      </div>
+   </div>
+}
+else
+{
+   <div class="col-lg-10 col-md-10 col-sm-10">
+      <div class="row">
+         <div class="col-lg-12 col-md-12 col-sm-12 text-center">
+            <div style="margin:0px 100px">
+               <div style="padding:30px"></div>
+               <h1 class="text-center bg-danger" style="padding:20px; margin-top:100px;font-size:50px">Failed an Order</h1>
+               <h1 class="text-center" style="margin-top:50px">@ViewBag.message</h1>
+            </div>
+         </div>
+      </div>
+   </div>
+}
+<!-- Body Right (Z) -->

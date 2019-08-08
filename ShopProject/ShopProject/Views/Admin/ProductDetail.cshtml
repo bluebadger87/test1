@@ -1,0 +1,139 @@
+﻿@model ShopProject.Models.Product
+@{
+   ViewData["Title"] = "ProductDetail";
+   int no = 0;
+}
+
+<!-- Body Right (A) -->
+<div class="col-lg-10 col-md-10 col-sm-10">
+   <!-- Product Simple Info & Cart Input A -->
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12">
+         <h1 class="text-center" style="padding:50px">ProductDetail</h1>
+         <div style="margin:0px 100px">
+            <form asp-controller="Admin" asp-action="ProductDelete" asp-route-id="@Model.ProductNo" asp-route-searchString="@ViewBag.searchString" asp-route-funnelDel="@ViewBag.funnelDel" method="post">
+               <h3>
+                  <a asp-controller="Admin" asp-action="ProductList" asp-route-searchString="@ViewBag.searchString" asp-route-funnelDel="@ViewBag.funnelDel" class="btn btn-primary btn-lg">&lt;&lt;Back</a>
+                  <a asp-controller="Admin" asp-action="ProductModify" asp-route-id="@Model.ProductNo" class="btn btn-warning btn-lg">Modify</a>
+                  @if (Model.ProductDel=="1")
+                  {
+                     <input type="submit" name="btn" class="btn btn-danger btn-lg" value="Delete" />
+                  }
+                  else
+                  {
+                     <input type="submit" name="btn" class="btn btn-primary btn-lg" value="Exist" />
+                  }
+               </h3>
+            </form>
+            <!-- Product Detail (A) -->
+            <table class="table table-hover" style="font-size: 13pt; margin:30px 0 60px 0">
+               <tr>
+                  <th rowspan="8" width="500">
+                     <img src="~/images/@Model.ProductMainImage" width=480 height=375 />
+                     <a href="/images/@Model.ProductMainImage" download>Down Image: @Model.ProductName</a>
+                  </th>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.ProductNo)</th>
+                  <td>@Html.DisplayFor(model => model.ProductNo)</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.ProductCategory)</th>
+                  <td>@Html.DisplayFor(model => model.ProductCategoryList.Name)</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.ProductName)</th>
+                  <td>@Html.DisplayFor(model => model.ProductName)</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.ProductPrice)</th>
+                  <td>@Html.DisplayFor(model => model.ProductPrice)円</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.ProductStock)</th>
+                  <td>@(ViewBag.currentStock)/@(Html.DisplayFor(model => model.ProductStock))個</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th>@Html.DisplayNameFor(model => model.ProductRemark)</th>
+                  <td>@Html.DisplayFor(model => model.ProductRemark)</td>
+               </tr>
+               <tr style="text-indent: 20px;">
+                  <th> @Html.DisplayNameFor(model => model.ProductDel)</th>
+                  @if (Model.ProductDel=="1")
+                  {
+                     <td>Exist</td>
+                  }
+                  else
+                  {
+                     <td>Deleted</td>
+                  }
+               </tr>
+            </table>
+            <!-- Product Detail (Z) -->
+            <!-- Details A -->
+            <details class="text-center" id="details">
+               <summary style="cursor: pointer;font-size:20px">Display Detail</summary>
+               <p>
+                  Lorem ipsum dolor sit amet,<br />
+                  @foreach (var item in ViewBag.image)
+                  {
+                     @if (item.ProductImageName != "NoImage.PNG")
+                     {
+                        <img src="~/images/@item.ProductImageName" style="max-width:1200px;margin:30px 0" /><br />
+                     }
+                  }
+               </p>
+               <button class="btn btn-warning btn-lg" id="closeBtn">Close Details</button>
+            </details>
+            <!-- Details Z -->
+            <!-- Product List (A) -->
+            <table class="table table-hover" style="margin:80px 0">
+               <thead>
+                  <tr>
+                     <th>no</th>
+                     <th>OrderNo</th>
+                     <th>UserId</th>
+                     <th>UserName</th>
+                     <th>UserAddress</th>
+                     <th>UserTel</th>
+                     <th>UserMail</th>
+                     <th>Quantity</th>
+                     <th>Price</th>
+                     <th>DetailInp</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  @foreach (var item in (List<OrderDetail>)ViewBag.purchaseHistory)
+                  {
+                     <tr>
+                        <td>@(no = no + 1)</td>
+                        <td>@item.OrderDetailOrderNo</td>
+                        <td>
+                           <a asp-controller="Admin" asp-action="UserDetail" asp-route-id="@item.Order.User.UserNo">
+                              @item.Order.User.UserId
+                           </a>
+                        </td>
+                        <td>@item.Order.User.UserName</td>
+                        <td>@item.Order.User.UserAddress1</td>
+                        <td>@item.Order.User.UserTel</td>
+                        <td>@item.Order.User.UserMail</td>
+                        <td>@item.OrderDetailQuantity</td>
+                        <td>@item.Product.ProductPrice</td>
+                        <td>@item.OrderDetailInp</td>
+                     </tr>
+                  }
+               </tbody>
+            </table>
+            <!-- Product List (Z) -->
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Body Right (Z) -->
+<script>
+   $(function () {
+      $('#closeBtn').click(function () {
+         $('#details').removeAttr('open'); //removeAttribute("open")はerror
+      });
+   });
+</script>

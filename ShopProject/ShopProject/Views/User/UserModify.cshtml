@@ -1,0 +1,107 @@
+﻿@model ShopProject.Models.User
+@{
+   ViewData["Title"] = "UserModify";
+}
+<style>
+   td {
+      height: 60px
+   }
+</style>
+
+<!-- Body Right (A) -->
+<div class="col-lg-10 col-md-10 col-sm-10">
+   <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 ">
+         <h1 style="padding:50px;text-align:center">User Modify</h1>
+         <div style="margin:0px 300px">
+            <form asp-controller="User" asp-action="UserModify" method="post">
+               <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+               <table class="table table-hover" style="font-size: 13pt;">
+                  <tr style="text-indent: 20px;">
+                     <td><label asp-for="UserNo" class="control-label"></label></td>
+                     <td>
+                        @Model.UserNo
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <td><label asp-for="UserId" class="control-label"></label></td>
+                     <td>
+                        <input asp-for="UserId" class="form-control" />
+                        <span asp-validation-for="UserId" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <td><label asp-for="UserPassword1" class="control-label"></label></td>
+                     <td>
+                        <input asp-for="UserPassword1" class="form-control" />
+                        <span asp-validation-for="UserPassword1" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <td><label asp-for="UserPassword2" class="control-label"></label></td>
+                     <td>
+                        <input asp-for="UserPassword2" class="form-control" />
+                        <span asp-validation-for="UserPassword2" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <td><label asp-for="UserName" class="control-label"></label></td>
+                     <td>
+                        <input asp-for="UserName" class="form-control" />
+                        <span asp-validation-for="UserName" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <td><label asp-for="UserAddress1" class="control-label"></label></td>
+                     <td>
+                        <input asp-for="UserAddress1" class="form-control" />
+                        <span asp-validation-for="UserAddress1" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <td><label asp-for="UserTel" class="control-label"></label></td>
+                     <td>
+                        <input asp-for="UserTel" class="form-control" />
+                        <span asp-validation-for="UserTel" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <td><label asp-for="UserMail" class="control-label"></label></td>
+                     <td>
+                        <input asp-for="UserMail" class="form-control" />
+                        <span asp-validation-for="UserMail" class="text-danger"></span>
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <td><label asp-for="UserAuthority" class="control-label"></label></td>
+                     <td>
+                        @Model.UserAuthority
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <td><label asp-for="UserInp" class="control-label"></label></td>
+                     <td>
+                        @Model.UserInp
+                     </td>
+                  </tr>
+                  <tr style="text-indent: 20px;">
+                     <td><label asp-for="UserUpd" class="control-label"></label></td>
+                     <td>
+                        @Model.UserUpd
+                     </td>
+                  </tr>
+               </table>
+               <div style="margin-top: 80px">
+                  <a asp-controller="User" asp-action="UserMypage" class="btn btn-lg btn-primary pull-left" style="padding:15px 50px ">&lt;&lt;Back</a>
+                  <input type="submit" value="Modify" class="btn btn-warning btn-lg pull-right" style="padding:15px 50px " />
+               </div>
+               <input type="hidden" asp-for="UserNo" />
+               <input type="hidden" asp-for="UserAuthority" />
+               <input type="hidden" asp-for="UserDel" />
+               <input type="hidden" asp-for="UserInp" />
+            </form>
+         </div>
+      </div>
+   </div>
+</div>
+<!-- Body Right (Z) -->
